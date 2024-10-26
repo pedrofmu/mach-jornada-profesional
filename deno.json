@@ -4,7 +4,7 @@
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1",
-    "@std/path": "jsr:@std/path@^1.0.7",
-    "exceljs": "npm:exceljs@^4.4.0"
+    "@std/csv": "jsr:@std/csv@^1.0.3",
+    "@std/path": "jsr:@std/path@^1.0.7"
   }
 }
