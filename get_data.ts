@@ -1,7 +1,7 @@
 import { parse } from "@std/csv";
-import type { empresa } from "./main.ts";
+import type { Empresa } from "./main.ts";
 
-export async function getData(filePath: string): Promise<empresa[]> {
+export async function getData(filePath: string): Promise<Empresa[]> {
     let textContent: string = await Deno.readTextFile(filePath);
 
     const stringsToReplace: string[] = [
@@ -45,7 +45,7 @@ export async function getData(filePath: string): Promise<empresa[]> {
         strip: true,
     });
 
-    const empresas: empresa[] = dataParsed.map((row): empresa => {
+    const empresas: Empresa[] = dataParsed.map((row): Empresa => {
         return {
             nombre: row.nombre,
             numeroTelefono: row.telefono,
