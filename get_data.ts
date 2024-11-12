@@ -1,6 +1,15 @@
 import { parse } from "@std/csv";
 import type { Empresa } from "./main.ts";
 
+export function getEmpresaByName(empresaName: string, empresas: Empresa[]) {
+    for (let i = 0; i < empresas.length; i++) {
+        if (empresas[i].empresa === empresaName) {
+            return empresas[i];
+        }
+    }
+    return undefined;
+}
+
 export async function getData(filePath: string): Promise<Empresa[]> {
     let textContent: string = await Deno.readTextFile(filePath);
 
@@ -51,7 +60,9 @@ export async function getData(filePath: string): Promise<Empresa[]> {
             numeroTelefono: row.telefono,
             direccionCorreo: row.correo,
             empresa: row.empresa,
-            mesasRedondas: row.mesas_redondas.split(";").filter((item) => item.trim() !== "" ),
+            mesasRedondas: row.mesas_redondas.split(";").filter((item) =>
+                item.trim() !== ""
+            ),
             busca: row.buscas.split(";").filter((item) => item.trim() !== ""),
             ofrece: row.ofreces.split(";").filter((item) => item.trim() !== ""),
             seApuntaAlBrunch: row.brunch_networking,
