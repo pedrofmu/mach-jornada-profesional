@@ -1,7 +1,6 @@
 import * as path from "@std/path";
 import { getData } from "./get_data.ts";
-import { getMatches, type machMakingData } from "./match_making.ts";
-import { startWebServer } from "./web_server.ts";
+import { generateMatchingSchedule } from "./match_making.ts";
 
 export let data: Empresa[];
 
@@ -23,8 +22,7 @@ const filePath: string = path.resolve(
 
 async function main() {
     data = await getData(filePath);
-    console.log(data);
-    startWebServer();
+    generateMatchingSchedule(data);
 }
 
 main();

@@ -1,13 +1,20 @@
 import { parse } from "@std/csv";
 import type { Empresa } from "./main.ts";
 
-export function getEmpresaByName(empresaName: string, empresas: Empresa[]) {
-    for (let i = 0; i < empresas.length; i++) {
-        if (empresas[i].empresa === empresaName) {
-            return empresas[i];
+function deleteDuplicateEmpresas(empresas: Empresa[]): Empresa[] {
+    const empresasFiltered = empresas.reduce((acc: Empresa[], current: Empresa) => {
+        // Verifica si ya existe una empresa con el mismo tipo en el acumulador
+        const yaExiste = acc.some(e => e.empresa === current.empresa);
+        
+        // Si no existe, agrega la empresa actual al acumulador
+        if (!yaExiste) {
+            acc.push(current);
         }
-    }
-    return undefined;
+        
+        return acc;
+    }, []);
+    
+    return empresasFiltered;
 }
 
 export async function getData(filePath: string): Promise<Empresa[]> {
@@ -54,7 +61,7 @@ export async function getData(filePath: string): Promise<Empresa[]> {
         strip: true,
     });
 
-    const empresas: Empresa[] = dataParsed.map((row): Empresa => {
+    let empresas: Empresa[] = dataParsed.map((row): Empresa => {
         return {
             nombre: row.nombre,
             numeroTelefono: row.telefono,
@@ -69,6 +76,9 @@ export async function getData(filePath: string): Promise<Empresa[]> {
             infoAdicional: row.informacion_adicional,
         };
     });
+
+    // limpiar empresas repetidas
+    empresas = deleteDuplicateEmpresas(empresas);
 
     return empresas;
 }
