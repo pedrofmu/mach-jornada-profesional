@@ -1,8 +1,7 @@
 import * as path from "@std/path";
 import { getData } from "./get_data.ts";
-import { generateMatchingSchedule } from "./match_making.ts";
-
-export let data: Empresa[];
+import { generateMatchingSchedule, type Schedule } from "./match_making.ts";
+import { createCSVdata } from "./generate_csv.ts";
 
 export type Empresa = {
     nombre: string;
@@ -21,8 +20,10 @@ const filePath: string = path.resolve(
 );
 
 async function main() {
-    data = await getData(filePath);
-    generateMatchingSchedule(data);
+    const data: Empresa[] = await getData(filePath);
+    const schedule: Schedule = generateMatchingSchedule(data);
+    const csvData: string = createCSVdata(schedule);
+    Deno.writeTextFile("calendario.csv", csvData);
 }
 
 main();
