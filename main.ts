@@ -23,6 +23,7 @@ async function main() {
     const data: Empresa[] = await getData(filePath);
     const schedule: Schedule = generateMatchingSchedule(data);
     const csvData: string = createCSVdata(schedule);
+    console.log(schedule);
     Deno.writeTextFile("calendario.csv", csvData);
 }
 

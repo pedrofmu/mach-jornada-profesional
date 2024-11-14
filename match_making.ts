@@ -62,7 +62,11 @@ function convertMinsATime(m: number): string {
     return `${formatoHoras}:${formatoMinutos}`;
 }
 
-function generateMatch(empresa: EmpresaMachs, timeMatches: Match[]): Match {
+function generateMatch(
+    empresa: EmpresaMachs,
+    timeMatches: Match[],
+    allMatches: EmpresaMachs[],
+): Match {
     // comprobar que no este ya
     for (let i = 0; i < timeMatches.length; i++) {
         if (
@@ -98,6 +102,15 @@ function generateMatch(empresa: EmpresaMachs, timeMatches: Match[]): Match {
             );
             empresa.machingEmpresas.splice(index, 1);
 
+            for (let j = 0; j < allMatches.length; j++) {
+                if (allMatches[j].empresaName === empresaB) {
+                    const index = allMatches[j].machingEmpresas.indexOf(
+                        allMatches[j].machingEmpresas[j],
+                    );
+                    allMatches[j].machingEmpresas.splice(index, 1);
+                }
+            }
+
             return {
                 empresaA: empresaA,
                 empresaB: empresaB,
@@ -124,7 +137,7 @@ export function generateMatchingSchedule(allEmpresas: Empresa[]): Schedule {
     // iterar en cada franja de tiempo
     for (const time in schedule) {
         for (let i = 0; i < matchData.length; i++) {
-            const mach = generateMatch(matchData[i], schedule[time]);
+            const mach = generateMatch(matchData[i], schedule[time], matchData);
             if (mach.empresaA !== "error" && mach.empresaB !== "error") {
                 schedule[time].push(mach);
             }
