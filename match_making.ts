@@ -29,14 +29,11 @@ function generateEmpresasMatchs(allEmpresas: Empresa[]): EmpresaMachs[] {
 
             for (let x = 0; x < empresa.ofrece.length; x++) {
                 for (let y = 0; y < allEmpresas[j].busca.length; y++) {
-                    if (empresa.ofrece[x] === allEmpresas[j].busca[y]) {
+                    if (
+                        empresa.ofrece[x] === allEmpresas[j].busca[y] &&
+                        !machingEmpresas.includes(allEmpresas[j].empresa)
+                    ) {
                         machingEmpresas.push(allEmpresas[j].empresa);
-                        if (
-                            machingEmpresas.indexOf(allEmpresas[j].empresa) ===
-                                -1
-                        ) {
-                            machingEmpresas.push(allEmpresas[j].empresa);
-                        }
                     }
                 }
             }
@@ -127,6 +124,7 @@ function generateMatch(
 // Devolver el horario
 export function generateMatchingSchedule(allEmpresas: Empresa[]): Schedule {
     const matchData: EmpresaMachs[] = generateEmpresasMatchs(allEmpresas);
+    console.log(JSON.stringify(matchData));
     const schedule: Schedule = {};
     // Populate Schedule
     // desde las 15:15 hasta las 17:05 en mins 110
